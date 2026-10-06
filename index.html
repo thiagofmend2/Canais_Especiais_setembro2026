@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Canais Especiais - Setembro 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container { min-height: 350px; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
+    <header class="bg-white border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-8">
+            <h1 class="text-4xl font-bold text-slate-900 uppercase">CANAIS ESPECIAIS - SETEMBRO/2026</h1>
+            <p class="text-slate-500 mt-2">Visão Gerencial</p>
+            <p class="text-slate-600 text-sm mt-4">
+                Panorama de casos recebidos por Canais Especiais no mês de setembro/2026.
+            </p>
+        </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600">
+                <div class="flex items-center justify-between">
+                    <div><p class="text-slate-600 text-sm font-medium uppercase">Total de Atendimentos</p><p class="text-3xl font-bold text-slate-900 mt-2">156</p></div>
+                    <div class="bg-blue-100 p-4 rounded-full"><i data-lucide="bar-chart-3" class="w-8 h-8 text-blue-600"></i></div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-400">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-slate-600 text-sm font-medium uppercase">Base de Ativos</p>
+                        <p class="text-3xl font-bold text-slate-900 mt-2">183.029</p>
+                        <p class="text-[10px] text-slate-400 mt-1 italic">Base GPO não inclusa</p>
+                    </div>
+                    <div class="bg-blue-100 p-4 rounded-full"><i data-lucide="users" class="w-8 h-8 text-blue-400"></i></div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-yellow-500">
+                <div class="flex items-center justify-between">
+                    <div><p class="text-slate-600 text-sm font-medium uppercase">Atendimentos / Base</p><p class="text-3xl font-bold text-slate-900 mt-2">0,09%</p></div>
+                    <div class="bg-yellow-100 p-4 rounded-full"><i data-lucide="trending-up" class="w-8 h-8 text-yellow-600"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8 relative">
+            <h2 class="text-lg font-bold text-slate-900 mb-6 uppercase">Evolução Comparativa de Atendimentos Consolidados</h2>
+            <div id="evolutionChart" class="chart-container"></div>
+            <div class="absolute bottom-10 right-10 flex flex-col items-end text-[10px] font-bold pr-2 pb-2">
+                <span class="text-yellow-600">% da Base</span>
+                <span class="text-blue-500">Base de Ativos</span>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden h-full">
+                    <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4"><h2 class="text-white font-bold text-lg uppercase">Canais Especiais por IE - Setembro</h2></div>
+                    <div class="overflow-x-auto"><table class="w-full"><thead class="bg-slate-50 border-b border-slate-200"><tr><th class="px-6 py-3 text-left text-sm font-semibold text-slate-700">IE</th><th class="px-6 py-3 text-right text-sm font-semibold text-slate-700">CASOS RECEBIDOS</th></tr></thead><tbody id="ieTableBody"></tbody></table></div>
+                </div>
+            </div>
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-md p-6 h-full">
+                    <h2 class="text-lg font-bold text-slate-900 mb-6 uppercase">Distribuição de Atendimentos por Segmento</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div class="relative"><div id="segmentoChart"></div><div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -mt-2 text-center pointer-events-none"><span class="block text-4xl font-bold text-slate-900">218</span><span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total*</span></div></div>
+                        <div class="space-y-4" id="segmentoLegend"></div>
+                    </div>
+                    <div class="text-[10px] text-slate-400 mt-4 italic space-y-1">
+                        <p>*Reclame aqui PS: Página secundária do Sírio Libanês</p>
+                        <p>*Chat bot: Pesquisa de satisfação</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="bg-white rounded-lg shadow-md p-5 border-t-4 border-purple-600"><p class="text-xs font-semibold text-slate-500 uppercase">Sírio-Libanês Digital</p><p class="text-sm font-semibold text-slate-700 mt-3">Reclame Aqui PS</p><p class="text-3xl font-bold text-purple-700 mt-1">4</p></div>
+<div class="bg-white rounded-lg shadow-md p-5 border-t-4 border-emerald-500"><p class="text-xs font-semibold text-slate-500 uppercase">FSL Digital</p><p class="text-sm font-semibold text-slate-700 mt-3">Chat Bot</p><p class="text-3xl font-bold text-emerald-600 mt-1">25</p></div>
+<div class="bg-white rounded-lg shadow-md p-5 border-t-4 border-emerald-500"><p class="text-xs font-semibold text-slate-500 uppercase">FIA Online</p><p class="text-sm font-semibold text-slate-700 mt-3">Chat Bot</p><p class="text-3xl font-bold text-emerald-600 mt-1">14</p></div>
+<div class="bg-white rounded-lg shadow-md p-5 border-t-4 border-emerald-500"><p class="text-xs font-semibold text-slate-500 uppercase">FAAP Online</p><p class="text-sm font-semibold text-slate-700 mt-3">Chat Bot</p><p class="text-3xl font-bold text-emerald-600 mt-1">7</p></div>
+<div class="bg-white rounded-lg shadow-md p-5 border-t-4 border-emerald-500"><p class="text-xs font-semibold text-slate-500 uppercase">PUCRS Online</p><p class="text-sm font-semibold text-slate-700 mt-3">Chat Bot</p><p class="text-3xl font-bold text-emerald-600 mt-1">3</p></div>
+<div class="bg-white rounded-lg shadow-md p-5 border-t-4 border-emerald-500"><p class="text-xs font-semibold text-slate-500 uppercase">Impacta Digital</p><p class="text-sm font-semibold text-slate-700 mt-3">Chat Bot</p><p class="text-3xl font-bold text-emerald-600 mt-1">1</p></div>
+<div class="bg-white rounded-lg shadow-md p-5 border-t-4 border-emerald-500"><p class="text-xs font-semibold text-slate-500 uppercase">PUC-SP Digital</p><p class="text-sm font-semibold text-slate-700 mt-3">Chat Bot</p><p class="text-3xl font-bold text-emerald-600 mt-1">8</p></div>
+</section>
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8"><h2 class="text-lg font-bold text-slate-900 mb-6 uppercase">Evolução de Atendimentos por IE</h2><div id="ieEvolutionChart" class="chart-container"></div></div>
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8"><h2 class="text-lg font-bold text-slate-900 mb-6 uppercase">Principais Insights</h2><div class="space-y-4" id="executiveAnalysis"></div></section>
+        <section class="space-y-6 mb-8" id="ieCards"></section>
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8"><h2 class="text-lg font-bold text-slate-900 mb-6 uppercase">Maiores Concentradores de Demanda</h2><div class="overflow-x-auto"><table class="w-full"><thead><tr class="bg-blue-600 text-white"><th class="px-4 py-3 text-left text-sm font-semibold">Rank</th><th class="px-4 py-3 text-left text-sm font-semibold">Motivo de Contato</th><th class="px-4 py-3 text-left text-sm font-semibold">Descrição</th></tr></thead><tbody id="motivosTableBody"></tbody></table></div></section>
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8"><h2 class="text-lg font-bold text-slate-900 mb-6 uppercase">Destaque de Canais Especiais</h2><p class="text-slate-700 mb-6 text-sm">Distribuição consolidada dos segmentos de Canais Especiais em setembro:</p><div class="overflow-x-auto"><table class="w-full"><thead><tr class="bg-blue-600 text-white"><th class="px-4 py-3 text-left text-sm font-semibold">Ranking</th><th class="px-4 py-3 text-left text-sm font-semibold">Motivo</th><th class="px-4 py-3 text-right text-sm font-semibold">Volume</th></tr></thead><tbody id="destaqueTableBody"></tbody></table></div></section>
+    </main>
+
+    <script>
+        // Dados de Julho 2026
+        const ieData = [{name:"PUCRS ONLINE",value:89},{name:"FAAP ONLINE",value:31},{name:"FIA ONLINE",value:19},{name:"IMPACTA DIGITAL",value:6},{name:"SÍRIO-LIBANÊS DIGITAL",value:4},{name:"UNESC DIGITAL",value:1},{name:"PUC-SP DIGITAL",value:6}];
+        const segmentoData = [{name:"RA",value:104,color:"#1e3a8a"},{name:"PROCON",value:27,color:"#fbbf24"},{name:"Ouvidoria",value:25,color:"#60a5fa"},{name:"Chat Bot",value:58,color:"#10b981"},{name:"Reclame Aqui PS",value:4,color:"#ef4444"}];
+        const totalSegmentado = 218;
+        const historicoMensal = [{mes:"jan/26",total:166,base:134964,percentual:0.12},{mes:"fev/26",total:182,base:144244,percentual:0.13},{mes:"mar/26",total:170,base:151440,percentual:0.11},{mes:"abr/26",total:146,base:156615,percentual:0.09},{mes:"mai/26",total:134,base:162397,percentual:0.08},{mes:"jun/26",total:135,base:164717,percentual:0.08},{mes:"jul/26",total:162,base:170497,percentual:0.10},{mes:"ago/26",total:136,base:178599,percentual:0.08},{mes:"set/26",total:156,base:183029,percentual:0.09}];
+        const historicoIE = [{mes:"jan/26",data:[121,20,14,3,3,0,5]},{mes:"fev/26",data:[136,12,15,7,4,3,5]},{mes:"mar/26",data:[102,24,23,10,6,1,4]},{mes:"abr/26",data:[95,18,9,4,9,0,11]},{mes:"mai/26",data:[80,17,18,8,4,2,5]},{mes:"jun/26",data:[73,23,20,9,3,1,6]},{mes:"jul/26",data:[104,25,15,9,7,2,0]},{mes:"ago/26",data:[78,29,16,8,3,2,0]},{mes:"set/26",data:[89,31,19,6,4,1,6]}];
+        const ieCardsData = [{"name":"PUCRS ONLINE","logo":"https://bucket-vitrine-wl-prod.edtech.com.br/assets-headless/Logo_Icon_0bd832db2a_4f8bfdd079.svg","motivations":"<b>Segmentos em setembro:</b> Reclame Aqui (62), PROCON (16), Ouvidoria (11) e Chat Bot (3).<br><b>SLA:</b> 31:12:00.","stats":{"ra":62,"ouv":11,"pro":16,"bot":3},"insight":"Maior concentração do mês, com 89 casos gerenciais (57,1% do total)."},{"name":"FAAP ONLINE","logo":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQp6eFbWK4LH6au52iHgm_VpLwDTjZKLz0Sg&s","motivations":"<b>Segmentos em setembro:</b> Reclame Aqui (19), PROCON (6), Ouvidoria (6) e Chat Bot (7).<br><b>SLA:</b> 45:36:00.","stats":{"ra":19,"ouv":6,"pro":6,"bot":7},"insight":"Segunda maior concentração, com 31 casos gerenciais."},{"name":"FIA ONLINE","logo":"https://www.fiaonline.com.br/hs-fs/hubfs/FIA-Online---Logo-(Branco)-1-1.webp","motivations":"<b>Segmentos em setembro:</b> Reclame Aqui (11), PROCON (3), Ouvidoria (5) e Chat Bot (14).<br><b>SLA:</b> 28:48:00.","stats":{"ra":11,"ouv":5,"pro":3,"bot":14},"insight":"Registrou 19 casos gerenciais, com Chat Bot apresentado separadamente."},{"name":"IMPACTA DIGITAL","logo":"https://digital.impacta.com.br/hs-fs/hubfs/FACULDADE-LOGO-DIGITAL-NORMAL.png","motivations":"<b>Segmentos em setembro:</b> Reclame Aqui (4), Ouvidoria (2) e Chat Bot (1).<br><b>SLA:</b> 62:24:00.","stats":{"ra":4,"ouv":2,"bot":1},"insight":"Volume gerencial de 6 casos no mês."},{"name":"FACULDADE SÍRIO-LIBANÊS DIGITAL","logo":"https://digital.faculdadesiriolibanes.org.br/hs-fs/hubfs/logo-sirio-libanes-negativo.png","motivations":"<b>Segmentos em setembro:</b> Reclame Aqui (2), PROCON (2), Chat Bot (25) e Reclame Aqui PS (4).<br><b>SLA:</b> 26:24:00.","stats":{"ra":2,"pro":2,"bot":25,"ps":4},"insight":"Volume gerencial de 4 casos; Chat Bot e Reclame Aqui PS permanecem fora do total gerencial."},{"name":"UNESC DIGITAL","logo":"https://bucket-vitrine-wl-prod.edtech.com.br/assets-headless/logo_49f3ba3e59_1_1_1_5cace08c25.webp","motivations":"<b>Segmentos em setembro:</b> Ouvidoria (1).<br><b>SLA:</b> 40:48:00.","stats":{"ouv":1},"insight":"Volume gerencial reduzido, com 1 caso no mês."},{"name":"PUC-SP DIGITAL","logo":"","motivations":"<b>Segmentos em setembro:</b> Reclame Aqui (6) e Chat Bot (8).<br><b>SLA:</b> 14:06:00.","stats":{"ra":6,"bot":8},"insight":"Registrou 6 casos gerenciais; Chat Bot permanece apresentado separadamente."}];
+        const topConcentradores = [{rank:1,motivo:"Reclame Aqui",descricao:"Principal segmento gerencial, com 104 casos em setembro."},{rank:2,motivo:"PROCON",descricao:"Segundo maior segmento gerencial, com 27 casos."},{rank:3,motivo:"Ouvidoria",descricao:"Registrou 25 casos no mês."},{rank:4,motivo:"Chat Bot",descricao:"Somou 58 registros apresentados separadamente do total gerencial."}];
+        const destaqueCanaisEspeciais = [{rank:"1º",motivo:"Reclame Aqui",volume:104},{rank:"2º",motivo:"PROCON",volume:27},{rank:"3º",motivo:"Ouvidoria",volume:25},{rank:"4º",motivo:"Chat Bot (fora do total gerencial)",volume:58},{rank:"5º",motivo:"Reclame Aqui PS (fora do total gerencial)",volume:4}];
+
+        // Renderizar Tabela Total
+        const ieTotalTable = document.getElementById('ieTableBody');
+        ieData.forEach(item => { 
+            ieTotalTable.innerHTML += `<tr class="border-b border-slate-100 hover:bg-slate-50"><td class="px-6 py-3 text-sm text-slate-900">${item.name}</td><td class="px-6 py-3 text-sm text-slate-900 text-right font-medium">${item.value.toLocaleString('pt-BR')}</td></tr>`; 
+        });
+        ieTotalTable.innerHTML += `<tr class="bg-blue-50 border-t-2 border-blue-200"><td class="px-6 py-3 text-sm font-bold text-slate-900">CONSOLIDADO</td><td class="px-6 py-3 text-sm font-bold text-slate-900 text-right">156</td></tr>`;
+
+        // Legenda do Gráfico de Segmento
+        const segmentoLegend = document.getElementById('segmentoLegend');
+        segmentoData.forEach(item => { 
+            segmentoLegend.innerHTML += `<div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100"><div class="flex items-center gap-3"><div class="w-4 h-4 rounded-full shadow-sm" style="background-color: ${item.color}"></div><span class="text-sm font-bold text-slate-700">${item.name}</span></div><div class="flex items-center gap-4"><span class="text-lg font-black text-slate-900">${item.value.toLocaleString('pt-BR')}</span><span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-md border border-blue-100">${((item.value/218)*100).toFixed(1)}%</span></div></div>`; 
+        });
+
+        const segmentoPorIE = [
+            {ie:"Sírio-Libanês Digital",volume:33,ra:2,pro:2,ouv:0,bot:25,ps:4},
+            {ie:"FIA Online",volume:33,ra:11,pro:3,ouv:5,bot:14,ps:"Não possui"},
+            {ie:"FAAP Online",volume:38,ra:19,pro:6,ouv:6,bot:7,ps:"Não possui"},
+            {ie:"PUCRS Online",volume:92,ra:62,pro:16,ouv:11,bot:3,ps:"Não possui"},
+            {ie:"Impacta Digital",volume:7,ra:4,pro:0,ouv:2,bot:1,ps:"Não possui"},
+            {ie:"UNESC Digital",volume:1,ra:0,pro:0,ouv:1,bot:0,ps:"Não possui"},
+            {ie:"PUC-SP Digital",volume:14,ra:6,pro:0,ouv:0,bot:8,ps:"Não possui"}
+        ];
+
+        // Gráfico de Evolução
+        const evolutionOptions = { 
+            series: [
+                { name: 'Atendimentos', type: 'column', data: historicoMensal.map(d => d.total) }, 
+                { name: '% da Base', type: 'line', data: historicoMensal.map(d => d.percentual) }, 
+                { name: 'Base de Ativos', type: 'line', data: historicoMensal.map(d => d.base) }
+            ], 
+            chart: { height: 350, type: 'line', stacked: false, toolbar: { show: false } }, 
+            stroke: { width: [0, 4, 2], curve: 'smooth', dashArray: [0, 0, 5] }, 
+            colors: ['#1e3a8a', '#fbbf24', '#60a5fa'], 
+            xaxis: { categories: historicoMensal.map(d => d.mes) }, 
+            yaxis: [
+                { title: { text: 'Atendimentos' }, labels: { formatter: (v) => v.toLocaleString('pt-BR') } }, 
+                { opposite: true, labels: { formatter: (v) => v.toFixed(2) + '%' } }, 
+                { opposite: true, labels: { formatter: (v) => (v/1000).toFixed(0) + 'k' }, min: 130000, max: 200000 }
+            ], 
+            tooltip: { shared: true, intersect: false, y: { formatter: function (y, { seriesIndex }) { if(seriesIndex === 1) return y.toFixed(2) + '%'; if(seriesIndex === 2) return y.toLocaleString('pt-BR'); return y.toLocaleString('pt-BR'); } } }, 
+            legend: { position: 'bottom' }
+        };
+        new ApexCharts(document.querySelector("#evolutionChart"), evolutionOptions).render();
+
+        // Gráfico de Segmento
+        const segmentoOptions = {
+            series: segmentoData.map(d => d.value),
+            chart: { type: 'donut', height: 300 },
+            labels: segmentoData.map(d => d.name),
+            colors: segmentoData.map(d => d.color),
+            plotOptions: { pie: { donut: { size: '75%' } } },
+            legend: { show: false },
+            dataLabels: { enabled: false }
+        };
+        new ApexCharts(document.querySelector("#segmentoChart"), segmentoOptions).render();
+
+        // Gráfico de Evolução por IE
+        const ieEvolutionOptions = {
+            series: [
+                { name: 'PUCRS ONLINE', data: historicoIE.map(d => d.data[0]) },
+                { name: 'FAAP ONLINE', data: historicoIE.map(d => d.data[1]) },
+                { name: 'FIA ONLINE', data: historicoIE.map(d => d.data[2]) },
+                { name: 'IMPACTA DIGITAL', data: historicoIE.map(d => d.data[3]) },
+                { name: 'SÍRIO LIBANÊS', data: historicoIE.map(d => d.data[4]) },
+                { name: 'UNESC DIGITAL', data: historicoIE.map(d => d.data[5]) },
+                { name: 'PUC-SP DIGITAL', data: historicoIE.map(d => d.data[6]) }
+            ],
+            chart: { type: 'bar', height: 350, stacked: false, toolbar: { show: false } },
+            xaxis: { categories: historicoIE.map(d => d.mes) },
+            colors: ['#1e40af', '#dc2626', '#16a34a', '#ea580c', '#7c3aed', '#0891b2', '#a21caf'],
+            dataLabels: { enabled: true, formatter: (v) => v > 0 ? v : '' },
+            legend: { position: 'bottom' }
+        };
+        new ApexCharts(document.querySelector("#ieEvolutionChart"), ieEvolutionOptions).render();
+
+        // Análise Executiva
+        const analysis = [
+            { icon: 'trending-up', color: 'green', title: 'CRESCIMENTO DO VOLUME GERENCIAL', text: 'Excluindo Chat Bot e Reclame Aqui PS, setembro registrou 156 casos, alta de 14,7% frente aos 136 de agosto.' },
+            { icon: 'activity', color: 'blue', title: 'TAXA SOBRE A BASE', text: 'Com base ativa considerada de 183.029 alunos, a relação entre casos gerenciais e base ficou em 0,09%.' },
+            { icon: 'users', color: 'purple', title: 'PUCRS CONCENTRA A DEMANDA', text: 'A PUCRS Online respondeu por 89 casos gerenciais, equivalentes a 57,1% do total, seguida pela FAAP Online com 31 casos (19,9%).' },
+            { icon: 'message-circle', color: 'red', title: 'SEGMENTOS APRESENTADOS SEPARADAMENTE', text: 'O Chat Bot somou 58 registros e o Reclame Aqui PS, exclusivo da FSL, somou 4. Ambos aparecem na distribuição por segmento, mas não compõem o total gerencial de 156.' }
+        ];
+        const analysisDiv = document.getElementById('executiveAnalysis');
+        analysis.forEach(item => {
+            analysisDiv.innerHTML += `<div class="flex gap-4 p-4 bg-${item.color}-50 rounded-lg border-l-4 border-${item.color}-500"><div class="flex-shrink-0"><i data-lucide="${item.icon}" class="w-6 h-6 text-${item.color}-600 mt-1"></i></div><div><p class="font-semibold text-slate-900">${item.title}</p><p class="text-sm text-slate-700 mt-1">${item.text}</p></div></div>`;
+        });
+
+        // Cards de IE
+        const cardsDiv = document.getElementById('ieCards');
+        ieCardsData.forEach(ie => {
+            let statsHtml = `<div class="flex gap-8">`;
+            if(ie.stats.ra) statsHtml += `<div><p class="text-xs text-slate-600 font-semibold">RECLAME AQUI</p><p class="text-lg font-bold text-slate-900">${ie.stats.ra}</p></div>`;
+            if(ie.stats.ouv) statsHtml += `<div><p class="text-xs text-slate-600 font-semibold">OUVIDORIA</p><p class="text-lg font-bold text-slate-900">${ie.stats.ouv}</p></div>`;
+            if(ie.stats.pro) statsHtml += `<div><p class="text-xs text-slate-600 font-semibold">PROCON</p><p class="text-lg font-bold text-slate-900">${ie.stats.pro}</p></div>`;
+            if(ie.stats.bot) statsHtml += `<div><p class="text-xs text-slate-600 font-semibold">CHAT BOT</p><p class="text-lg font-bold text-slate-900">${ie.stats.bot}</p></div>`;
+            if(ie.stats.ps) statsHtml += `<div><p class="text-xs text-slate-600 font-semibold">PS</p><p class="text-lg font-bold text-slate-900">${ie.stats.ps}</p></div>`;
+            statsHtml += `</div>`;
+            
+            cardsDiv.innerHTML += `<div class="bg-white rounded-lg shadow-md p-6"><div class="grid grid-cols-1 md:grid-cols-4 gap-6"><div class="flex items-start justify-center md:justify-start"><div class="bg-black p-4 rounded-lg w-[150px] h-[150px] flex items-center justify-center border border-slate-700">${ie.logo ? `<img src="${ie.logo}" alt="${ie.name}" class="w-full h-full object-contain">` : `<div class="text-center text-white font-bold text-sm">PUC-SP<br><span class="text-xs font-normal">DIGITAL</span></div>`}</div></div><div class="md:col-span-3 space-y-4"><h3 class="font-bold text-slate-900 text-lg">${ie.name}</h3><div><p class="text-xs font-semibold text-slate-600 mb-1">PRINCIPAIS MOTIVAÇÕES</p><p class="text-sm text-slate-700 leading-relaxed">${ie.motivations}</p></div><div class="p-3 bg-blue-50 rounded border-l-4 border-blue-600"><p class="text-xs text-slate-700 italic">${ie.insight}</p></div>${statsHtml}</div></div></div>`;
+        });
+
+        // TOP 5 Maiores Concentradores
+        const topMotivosTable = document.getElementById('motivosTableBody');
+        topConcentradores.forEach(item => {
+            topMotivosTable.innerHTML += `<tr class="border-b border-slate-100 hover:bg-slate-50"><td class="px-4 py-3"><span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold text-sm">${item.rank}</span></td><td class="px-4 py-3 text-sm text-slate-900 font-medium">${item.motivo}</td><td class="px-4 py-3 text-sm text-slate-700">${item.descricao}</td></tr>`;
+        });
+
+        // Destaque de Canais Especiais
+        const destaqueTable = document.getElementById('destaqueTableBody');
+        destaqueCanaisEspeciais.forEach(item => {
+            destaqueTable.innerHTML += `<tr class="border-b border-slate-100 hover:bg-slate-50"><td class="px-4 py-3 text-sm text-slate-900 font-medium">${item.rank}</td><td class="px-4 py-3 text-sm text-slate-900">${item.motivo}</td><td class="px-4 py-3 text-sm text-slate-900 text-right font-bold">${item.volume}</td></tr>`;
+        });
+
+        // Inicializar ícones Lucide
+        lucide.createIcons();
+    </script>
+</body>
+</html>
